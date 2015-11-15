@@ -27,5 +27,15 @@ class OneDriveClient
 
         return $api->makeRequest();        
     }
+
+    public function listFolder($path){
+        $api = new OneDriveCurl;
+        $api->setAccessToken($this->accessToken);
+        $api->setBaseUrl(self::API_URL);
+        $api->setPath("/drive/root:/$path");
+
+        return $api->makeRequest();
+    }
+
 }
 ?>
