@@ -25,17 +25,22 @@ class OneDriveClient
 		$api = new OneDriveCurl;
 		$api->setAccessToken($this->accessToken);
 		$api->setBaseURL(self::API_URL);
-		$api->setPath("/drive/root:/$path");
+		$api->setPath("/drive/root:/{$path}");
 
 		return $api->makeRequest();
 	}
 
-	public function createFolder($pathname) {
+	public function createFolder($name) {
 		$api = new OneDriveCurl;
 		$api->setAccessToken($this->accessToken);
 		$api->setBaseURL(self::API_URL);
-		$api->setOption(CURLOPT_PUT, true);
-		$api->setPath("/drive/root:/{$pathname}");
+		$api->setPath('/drive/root/children');
+		$api->setHeader('Content-Type', 'application/json');
+		$api->setOption(CURLOPT_POST, true);
+		$api->setOption(CURLOPT_POSTFIELDS, json_encode(array(
+			'name'   => $name,
+			'folder' => (object) array(),
+		)));
 
 	  	return $api->makeRequest();
 	}
@@ -59,6 +64,6 @@ class OneDriveClient
 		$api->setOption(CURLOPT_FILE, $outStream);
 		$api->setPath("/drive/root:/{$pathname}:/content");
 
-		return $api->makeRequest();      
+		return $api->makeRequest();
 	}
 }
