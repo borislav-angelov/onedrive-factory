@@ -19,7 +19,6 @@ class OneDriveCurl
 		}
 
 		$this->setOption(CURLOPT_RETURNTRANSFER, true);
-
 		$this->setOption(CURLOPT_SSL_VERIFYPEER, false);
 	}
 
@@ -75,8 +74,10 @@ class OneDriveCurl
 			$httpHeaders[] = "$name: $value";
 		}
 
+		// Apply cURL headers
 		$this->setOption(CURLOPT_HTTPHEADER, $httpHeaders);
 
+		// Apply cURL options
 		foreach ($this->options as $name => $value) {
 			curl_setopt($this->handler, $name, $value);
 		}
