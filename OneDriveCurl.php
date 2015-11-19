@@ -18,8 +18,11 @@ class OneDriveCurl
 			throw new Exception("OneDrive factory requires cURL extension");
 		}
 
-		$this->setOption(CURLOPT_RETURNTRANSFER, true);
-		$this->setOption(CURLOPT_SSL_VERIFYPEER, false);
+        // Default configuration
+        $this->setOption(CURLOPT_HEADER, false);
+        $this->setOption(CURLOPT_RETURNTRANSFER, true);
+        $this->setOption(CURLOPT_FOLLOWLOCATION, true);
+        $this->setOption(CURLOPT_CONNECTTIMEOUT, 30);
 	}
 
 	public function setAccessToken($value) {
@@ -90,8 +93,7 @@ class OneDriveCurl
 		return json_decode($response, true);
 	}
 
-	public function __destruct()
-	{
+	public function __destruct() {
 		if ($this->handler !== null) {
 			curl_close($this->handler);
 		}

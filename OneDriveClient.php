@@ -61,8 +61,8 @@ class OneDriveClient
 		$api = new OneDriveCurl;
 		$api->setAccessToken($this->accessToken);
 		$api->setBaseURL(self::API_URL);
-		$api->setOption(CURLOPT_FILE, $outStream);
 		$api->setPath("/drive/root:/{$pathname}:/content");
+		$api->setOption(CURLOPT_FILE, $outStream);
 
 		return $api->makeRequest();
 	}
