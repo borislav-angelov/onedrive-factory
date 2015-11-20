@@ -1,6 +1,7 @@
 <?php
 class OneDriveCurl
 {
+
 	protected $baseURL = null;
 
 	protected $path    = null;
