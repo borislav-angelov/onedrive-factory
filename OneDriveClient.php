@@ -54,6 +54,7 @@ class OneDriveClient
         $api->setOption(CURLOPT_INFILE, $inStream);
         $api->setOption(CURLOPT_INFILESIZE, $inSize);
         $api->setPath("/drive/root:/{$pathname}:/content");
+
         return $api->makeRequest();
     }
 
