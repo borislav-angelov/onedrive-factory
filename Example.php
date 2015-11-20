@@ -4,13 +4,16 @@ header('Content-Type: text/html; charset=utf-8');
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'OneDriveClient.php';
 
-$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAZ3bGTVf69CcFIH6EJGgcgPYyeWufM54YNLR3FJQAivbyj7Espbtd2ARFrfdXwSXMUjweszhicqsracU0uuww5FU+CnKrliFtiFr8ZHKduRts9J/gckDh2jQvNgfE2ytatRELV3xNVkRP15leOLFJTQCA7Zmxz9FEG44lyZGnKd3ElW0EfO1ExjeXUN8ny3+JOzRKqlFNSOb0r7ONRcUKVtqRGDRKdOxk9MJ6FzCo6VGl/Yp/AvtsRytgDC2NLmJ/UwAL18RAly70LwglBBYitFCSAPj45JfWoZOZX7ub19JDtEGlo/mVbvcafbQ5IJAA2TcE5iiTc6ythCb4T3m0I8DZgAACCQshycFBnhfKAHlPZ7aIyLWEwOHg8MFU/4dgkAp93+aEz/vXjgAvC6kosH3mTgAgBEFuxR14YEFWo5QYPFDseA7Ly6s1EyunyBEBUcWWP6N8h6T4LJ/DTZtWJSuqrrRkELZWfYlxv4Ftj6DDLOdlsKlK5kCWv/txukOCk6CVq5JynDUnAMLcngPAtTTmcOpRr9OvfUb2XavSezMHoXGHkgzBKIb0f2XvqhF9rM4fBAX04rNb71myajHOGqU3lLzaGCF7TeR8Puifeooqlojc+UATTHWt6v+whtWVCi0J9MG/QN+MoF7wvj7B/AWklkLYEvoo0JPxIpTk77cVfFwbZitH1YN9HKonNOo4U0XtusNa/ZZF1hAxlwJlGQ7vq/DPXBTVzSASUwSYNN2wAvg6WZBTVAB');
+$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAARM7M7tJiriJWMo5+noVhs6xylWtx9v+EcyKg4LI1zJ1hyhx5cY6x4pJfSlEimoaJ6dMg/3ftvWxssP8Y68QLWA8zlqCgrz2N0d3VcjDKWhZF8bOZGgSBdSjk1vCAKrx8qVmoHwT0M3o3kOB8fa+MrYJ7tVrhiejbqFh4YRb6Ju5ALiLZMEdZyLsNbgXR+UA2fZ36gnAYldFAkOz3QhXBFdZKiNhyxio4QV9vHXirAg7GFQINtdAqfDDbRJJapkUzn6Yo/zkR5oEPmHLekrVgoAZVPL82W4HVGvDD9Q/tCc6p1Ba9g9OXMiVfBZyNmkLOT42Zs/cVWUP+HM+D91Fc6gDZgAACGK7rq6vsOcVKAHWbFbs35QOtXYVDGZGcLsOol+1Jebbyv9Hjxwup3KiwxpFVS5cfWaLgVvqVBdtWyYsyhmr0Ob8vpm/dRLaBhahzzsoZR756UBU+Zh7wCz2qXzBb7uh+ZHR+EvkqgYh86UnZf6RHSNYAhP7ach9BX4n578U8uDZvlFrERfXHi419RJvCQE95KefNh3HIP177E5APAKhnMPXUya2vCcFzhkOw0vriJF37oZkMz6GKA+V2HOzBabqIle5zPOLcAstPsILUVSsijZlTPmFFF3oEJPONlrQxqgjb5fFvFhDqVn2UiWEn2/rH9hG2KjAGBN/PvcxJvyu38Hwi3BQ38KbawNiO/rEhIicILZ4+LQHvuqTObWUUE5nCmHCSzxkm8GzIzfAI02a7Ef+nVAB');
 /*
 $list_folder = $client->listFolder('here');
 */
-$createFolder = $client->createFolder('test123');
 
-var_dump($createFolder);
+$file = fopen('my_file.txt', 'w+');
+
+$downloadFile = $client->downloadFile($file, 'here/file.txt');
+
+var_dump($downloadFile);
 /*
 $upload_file = $client->uploadFile('here', 'xaxa.txt');
 
