@@ -1,7 +1,7 @@
 <?php
+
 class OneDriveCurl
 {
-
 	protected $baseURL = null;
 
 	protected $path    = null;
@@ -72,6 +72,7 @@ class OneDriveCurl
 	public function makeRequest() {
 		$this->handler = curl_init($this->getBaseUrl() . $this->getPath());
 		$httpHeaders = array();
+
 		foreach ($this->headers as $name => $value) {
 			$httpHeaders[] = "$name: $value";
 		}
