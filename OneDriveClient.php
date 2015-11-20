@@ -46,16 +46,16 @@ class OneDriveClient
 	}
 
 	public function uploadFile($inStream, $inSize, $pathname) {
-		$api = new OneDriveCurl;
-		$api->setAccessToken($this->accessToken);
-		$api->setBaseURL(self::API_URL);
-		$api->setOption(CURLOPT_INFILE, $my_file);
-		$api->setOption(CURLOPT_PUT, true);
-		$api->setOption(CURLOPT_INFILESIZE, $inSize);
-		$api->setPath("/drive/root:/{$pathname}:/content");
-
-		return $api->makeRequest();
-	}
+        $api = new OneDriveCurl;
+        $api->setAccessToken($this->accessToken);
+        $api->setBaseURL(self::API_URL);
+        $api->setHeader('Content-Type', 'text/plain');
+        $api->setOption(CURLOPT_PUT, true);
+        $api->setOption(CURLOPT_INFILE, $inStream);
+        $api->setOption(CURLOPT_INFILESIZE, $inSize);
+        $api->setPath("/drive/root:/{$pathname}:/content");
+        return $api->makeRequest();
+    }
 
 	public function downloadFile($outStream, $pathname) {
 		$api = new OneDriveCurl;

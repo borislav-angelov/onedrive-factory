@@ -4,14 +4,10 @@ header('Content-Type: text/html; charset=utf-8');
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'OneDriveClient.php';
 
-$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAZ3bGTVf69CcFIH6EJGgcgPYyeWufM54YNLR3FJQAivbyj7Espbtd2ARFrfdXwSXMUjweszhicqsracU0uuww5FU+CnKrliFtiFr8ZHKduRts9J/gckDh2jQvNgfE2ytatRELV3xNVkRP15leOLFJTQCA7Zmxz9FEG44lyZGnKd3ElW0EfO1ExjeXUN8ny3+JOzRKqlFNSOb0r7ONRcUKVtqRGDRKdOxk9MJ6FzCo6VGl/Yp/AvtsRytgDC2NLmJ/UwAL18RAly70LwglBBYitFCSAPj45JfWoZOZX7ub19JDtEGlo/mVbvcafbQ5IJAA2TcE5iiTc6ythCb4T3m0I8DZgAACCQshycFBnhfKAHlPZ7aIyLWEwOHg8MFU/4dgkAp93+aEz/vXjgAvC6kosH3mTgAgBEFuxR14YEFWo5QYPFDseA7Ly6s1EyunyBEBUcWWP6N8h6T4LJ/DTZtWJSuqrrRkELZWfYlxv4Ftj6DDLOdlsKlK5kCWv/txukOCk6CVq5JynDUnAMLcngPAtTTmcOpRr9OvfUb2XavSezMHoXGHkgzBKIb0f2XvqhF9rM4fBAX04rNb71myajHOGqU3lLzaGCF7TeR8Puifeooqlojc+UATTHWt6v+whtWVCi0J9MG/QN+MoF7wvj7B/AWklkLYEvoo0JPxIpTk77cVfFwbZitH1YN9HKonNOo4U0XtusNa/ZZF1hAxlwJlGQ7vq/DPXBTVzSASUwSYNN2wAvg6WZBTVAB');
-/*
-$list_folder = $client->listFolder('here');
-*/
-$createFolder = $client->createFolder('test123');
+$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAbGsrqRKgfgv87XAyruC1fUlFEaIPN9PpZEGzDYrpwRq01pcF4hfabCFuCd32vfmAbfz+glc0t3OMdRfHAol1BPLJ5ci6WrEYGQ6ZM47BmqoCZBBPU1y+dmN/ABgjZuxELxF70uZ1VR4mIPJC/DRZWj+AhTbqkC+QlT8LeUonIj4I7Tu9Ak3PbYNSSuIRkSbnXsy1pyBcVQdeFOehAG6L6HR2cwgpcCv76E9NR8JlxDTt0XV7/iyIdsf/G/AFtGhfuc6VPMJV2fUG34pFspHLfe5G7efN95BMZiaY+JKxtKHqnmQrgo1+AasDcyuzgoR4zA83XD4WnKXmJ76GBLbk5MDZgAACE4tL80kclXvKAGA/Yv7lz9GyfPI5rPd/ZygCCkIWlL6lmZtRiCTwyaIkb4QEZ3XogAXy7lHKYm670OWWjW3zxc9ldwYcEUtYeYGfPZG1U+aoE5YbK8vq/WioKFtfy5isa8ab3Q0CNMA5KRqSd1sHbt92xGQBXPH9cWz8DnSWWYlzEhevlTKpFDI7uYQYBHfhOUNadf9EyZXzKBC6Fq/0qHAtl5hTqnaBtbRW6wiU2w2yMi2bIIn8A3dH66aS1z0yKjBjF6pqEOWy927UOkuCD0XU4Jg8E8PaMPWG4VGrnztYKYm0tHJ1HP/YOKT6A/HeUuTcXnsFX61QDXBQHwngNzJvY/i8bbrTykknSefKic4IQ/Q0QdCcgUVVMmdIPtc9vfxVAZ2NRw0mE9nyrmL40Qn2lAB');
 
-var_dump($createFolder);
-/*
-$upload_file = $client->uploadFile('here', 'xaxa.txt');
+$file = fopen('opa.txt', 'w+');
 
-$download_file = $client->downloadFile('opa.txt', 'onedrive-factory');*/
+$lister = $client->downloadFile($file, 'here/opa.txt');
+
+var_dump($lister);
