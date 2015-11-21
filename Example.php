@@ -4,10 +4,16 @@ header('Content-Type: text/html; charset=utf-8');
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'OneDriveClient.php';
 
-$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAbGsrqRKgfgv87XAyruC1fUlFEaIPN9PpZEGzDYrpwRq01pcF4hfabCFuCd32vfmAbfz+glc0t3OMdRfHAol1BPLJ5ci6WrEYGQ6ZM47BmqoCZBBPU1y+dmN/ABgjZuxELxF70uZ1VR4mIPJC/DRZWj+AhTbqkC+QlT8LeUonIj4I7Tu9Ak3PbYNSSuIRkSbnXsy1pyBcVQdeFOehAG6L6HR2cwgpcCv76E9NR8JlxDTt0XV7/iyIdsf/G/AFtGhfuc6VPMJV2fUG34pFspHLfe5G7efN95BMZiaY+JKxtKHqnmQrgo1+AasDcyuzgoR4zA83XD4WnKXmJ76GBLbk5MDZgAACE4tL80kclXvKAGA/Yv7lz9GyfPI5rPd/ZygCCkIWlL6lmZtRiCTwyaIkb4QEZ3XogAXy7lHKYm670OWWjW3zxc9ldwYcEUtYeYGfPZG1U+aoE5YbK8vq/WioKFtfy5isa8ab3Q0CNMA5KRqSd1sHbt92xGQBXPH9cWz8DnSWWYlzEhevlTKpFDI7uYQYBHfhOUNadf9EyZXzKBC6Fq/0qHAtl5hTqnaBtbRW6wiU2w2yMi2bIIn8A3dH66aS1z0yKjBjF6pqEOWy927UOkuCD0XU4Jg8E8PaMPWG4VGrnztYKYm0tHJ1HP/YOKT6A/HeUuTcXnsFX61QDXBQHwngNzJvY/i8bbrTykknSefKic4IQ/Q0QdCcgUVVMmdIPtc9vfxVAZ2NRw0mE9nyrmL40Qn2lAB');
+$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAaXyEfXvVEcMgoKZtN3z+dTXA4MCKH0cObVzf0vETQ2Agiqp2VCOmbdSsY578r/qpVpQIgF+8FDvjRv3AAeq4awotofIsjN15rQ77ca4eM5jfOshXIOBk/88+Vjx4yzNp7pJAwJgKPKSdf/rjGhzP8QoXH8XuurDj0uT9C9AEJdLI4ByU1qv7F5CXvQ6K0K+56rXB899cfqJVZ7VtaC/grKDIcdUxhq86XSXbSLHyrrqF0Rj+QXdcwF/xd/esO9ZBjHD2kEivs9A7Vb6RGNy6VjuFFfVH+b3cIfaCNj6soSRy0LsFmmTtQqhBOAM4/ZXiMp11HKBZjLB3X9FaSbKa14DZgAACCUshV20kKCOKAFImS5E6hHDpQeYFUkJXv7cpLH1KroU0pIQNPw36IT6lWwdvVmc2nmg96L1zFc4FvuPn7d2Ab315EsfiHKnTmzTv1iXna+Bi7QqdRyBYVLcC9a/J7CZIGSolyjg8y7xm4DsqSglVJVvM29C68TDx9q722j0JHhTfQe6eIk5vq3UlFKWkiTOGiQFUf2SIJ7b/OyKRAXV/j6AgmiZysSSz6V3DrmfNiYiuOzOdIs8lExxtoxxMoVCRAL9Zbls7let5UAGHI+TNm3VWnHLatHODOFWcN1+llPIhjLBNit/eKAszcHkdr/BQ7+RC2b+vRJuyZvVp6Akv7nTPrzWuA2omwaIEm+9JMvQw0z1oJqGoTidgXO89UZClrCjIkGNal6/cnXKl7L8bQDXM1AB');
 
-$file = fopen('opa.txt', 'w+');
+$filer = fopen('neta.exe', 'w+');
+$file_size = 111722256;
+$params = array(
+	'size' => $file_size,
+	'startBytes' => 0,
+	'endBytes' => 100000
+	);
 
-$lister = $client->downloadFile($file, 'here/opa.txt');
+$downloader = $client->downloadFileChunks('here/neta.exe', $filer, $params);
 
-var_dump($lister);
+var_dump($downloader);
