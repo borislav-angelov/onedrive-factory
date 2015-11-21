@@ -4,17 +4,16 @@ header('Content-Type: text/html; charset=utf-8');
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'OneDriveClient.php';
 
-$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAARM7M7tJiriJWMo5+noVhs6xylWtx9v+EcyKg4LI1zJ1hyhx5cY6x4pJfSlEimoaJ6dMg/3ftvWxssP8Y68QLWA8zlqCgrz2N0d3VcjDKWhZF8bOZGgSBdSjk1vCAKrx8qVmoHwT0M3o3kOB8fa+MrYJ7tVrhiejbqFh4YRb6Ju5ALiLZMEdZyLsNbgXR+UA2fZ36gnAYldFAkOz3QhXBFdZKiNhyxio4QV9vHXirAg7GFQINtdAqfDDbRJJapkUzn6Yo/zkR5oEPmHLekrVgoAZVPL82W4HVGvDD9Q/tCc6p1Ba9g9OXMiVfBZyNmkLOT42Zs/cVWUP+HM+D91Fc6gDZgAACGK7rq6vsOcVKAHWbFbs35QOtXYVDGZGcLsOol+1Jebbyv9Hjxwup3KiwxpFVS5cfWaLgVvqVBdtWyYsyhmr0Ob8vpm/dRLaBhahzzsoZR756UBU+Zh7wCz2qXzBb7uh+ZHR+EvkqgYh86UnZf6RHSNYAhP7ach9BX4n578U8uDZvlFrERfXHi419RJvCQE95KefNh3HIP177E5APAKhnMPXUya2vCcFzhkOw0vriJF37oZkMz6GKA+V2HOzBabqIle5zPOLcAstPsILUVSsijZlTPmFFF3oEJPONlrQxqgjb5fFvFhDqVn2UiWEn2/rH9hG2KjAGBN/PvcxJvyu38Hwi3BQ38KbawNiO/rEhIicILZ4+LQHvuqTObWUUE5nCmHCSzxkm8GzIzfAI02a7Ef+nVAB');
-/*
-$list_folder = $client->listFolder('here');
-*/
+$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAaXyEfXvVEcMgoKZtN3z+dTXA4MCKH0cObVzf0vETQ2Agiqp2VCOmbdSsY578r/qpVpQIgF+8FDvjRv3AAeq4awotofIsjN15rQ77ca4eM5jfOshXIOBk/88+Vjx4yzNp7pJAwJgKPKSdf/rjGhzP8QoXH8XuurDj0uT9C9AEJdLI4ByU1qv7F5CXvQ6K0K+56rXB899cfqJVZ7VtaC/grKDIcdUxhq86XSXbSLHyrrqF0Rj+QXdcwF/xd/esO9ZBjHD2kEivs9A7Vb6RGNy6VjuFFfVH+b3cIfaCNj6soSRy0LsFmmTtQqhBOAM4/ZXiMp11HKBZjLB3X9FaSbKa14DZgAACCUshV20kKCOKAFImS5E6hHDpQeYFUkJXv7cpLH1KroU0pIQNPw36IT6lWwdvVmc2nmg96L1zFc4FvuPn7d2Ab315EsfiHKnTmzTv1iXna+Bi7QqdRyBYVLcC9a/J7CZIGSolyjg8y7xm4DsqSglVJVvM29C68TDx9q722j0JHhTfQe6eIk5vq3UlFKWkiTOGiQFUf2SIJ7b/OyKRAXV/j6AgmiZysSSz6V3DrmfNiYiuOzOdIs8lExxtoxxMoVCRAL9Zbls7let5UAGHI+TNm3VWnHLatHODOFWcN1+llPIhjLBNit/eKAszcHkdr/BQ7+RC2b+vRJuyZvVp6Akv7nTPrzWuA2omwaIEm+9JMvQw0z1oJqGoTidgXO89UZClrCjIkGNal6/cnXKl7L8bQDXM1AB');
 
-$file = fopen('my_file.txt', 'w+');
+$filer = fopen('neta.exe', 'w+');
+$file_size = 111722256;
+$params = array(
+	'size' => $file_size,
+	'startBytes' => 0,
+	'endBytes' => 100000
+	);
 
-$downloadFile = $client->downloadFile($file, 'here/file.txt');
+$downloader = $client->downloadFileChunks('here/neta.exe', $filer, $params);
 
-var_dump($downloadFile);
-/*
-$upload_file = $client->uploadFile('here', 'xaxa.txt');
-
-$download_file = $client->downloadFile('opa.txt', 'onedrive-factory');*/
+var_dump($downloader);
