@@ -4,7 +4,9 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'OneDriveCurl.php';
 
 class OneDriveClient
 {
-	const API_URL = "https://api.onedrive.com/v1.0";
+	const API_URL 		= "https://api.onedrive.com/v1.0";
+
+	const CHUNK_SIZE 	= 4194304; // 4 MB
 
 	protected $accessToken = null;
 
@@ -66,5 +68,42 @@ class OneDriveClient
 		$api->setPath("/drive/root:/{$pathname}:/content");
 
 		return $api->makeRequest();
+	}
+
+	public function downloadFileChunks($path, $fileStream, $params = array()) {
+		$api = new OneDriveCurl;
+		$api->setAccessToken($this->accessToken);
+		$api->setBaseURL(self::API_URL);
+		$api->setPath("/drive/root:/$path:/content");
+		$api->setOption(CURLOPT_WRITEFUNCTION, function($ch, $data) use ($fileStream) {
+			$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			if($status !== 200 && ($response = json_decode($data, true))) {
+				throw new Exception($response['error'], $status);
+			}
+
+		fwrite($fileStream, $data);
+
+		return strlen($data);
+	});
+
+		if(isset($params['size']) && isset($params['startBytes']) && isset($params['endBytes'])) {
+			$api->setHeader('Content-Range', "bytes={$params['startBytes']}-{$params['endBytes']}");
+
+			if($params['size'] < ($params['startBytes'] + self::CHUNK_SIZE)) {
+				$params['startBytes'] = $params['size'];
+			} else {
+				$params['startBytes'] = $params['endBytes'] + 1;
+			}
+
+			if($params['size'] < ($params['endBytes'] + self::CHUNK_SIZE)) {
+				$params['endBytes'] = $params['size'];
+			} else {
+				$params['endBytes'] += self::CHUNK_SIZE;
+			}
+		}
+
+		return $api->makeRequest();
+
+		return $params;
 	}
 }
