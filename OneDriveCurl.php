@@ -96,7 +96,6 @@ class OneDriveCurl
 		}
 
 		return json_decode($response, true);
-
 	}
 
 	public function __destruct() {

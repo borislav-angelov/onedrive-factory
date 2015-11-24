@@ -106,4 +106,33 @@ class OneDriveClient
 
 		return $params;
 	}
+
+	public function uploadFileChunk($path, $data, $params = array()) {
+		$splittedPath = explode('/', $path);
+		$splittedParams = count($splittedPath);
+		$itemName = $splittedPath[$splittedParams - 1];
+
+		$api = new OneDriveCurl;
+		$api->setAccessToken($this->accessToken);
+		$api->setBaseURL(self::API_URL);
+		$api->setPath("/drive/root:/$path:/upload.createSession");
+		$api->setHeader('Content-Type', 'application/json');
+		$api->setOption(CURLOPT_POST, true);
+		$api->setOption(CURLOPT_POSTFIELDS, json_encode(array(
+			'item' => array(
+				'name' => $itemName
+				))));
+
+		$result = $api->makeRequest();
+		$uploadUrl = $result['uploadUrl'];
+
+		$api->setPath($uploadUrl);
+		$api->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
+		$api->setHeader('Content-Length', $params['size']);
+		$api->setHeader('Content-Range', 'bytes 0-' . self::CHUNK_SIZE . '/' . $params['size']);
+		$api->setOption(CURLOPT_FILE, $fileToStore);
+
+		$api->makeRequest();
+	}
+
 }
