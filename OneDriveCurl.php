@@ -89,13 +89,14 @@ class OneDriveCurl
 
 		$response = curl_exec($this->handler);
 
-		var_dump($response);
 
 		if ($response === false) {
 			throw new Exception('Error executing HTTP request: ' . curl_error($this->handler));
 		}
 
 		return json_decode($response, true);
+
+				var_dump($response);
 	}
 
 	public function __destruct() {

@@ -126,11 +126,15 @@ class OneDriveClient
 		$result = $api->makeRequest();
 		$uploadUrl = $result['uploadUrl'];
 
+		$file = fopen($itemName, 'r');
+
+		$api = new OneDriveCurl;
 		$api->setPath($uploadUrl);
 		$api->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
 		$api->setHeader('Content-Length', $params['size']);
 		$api->setHeader('Content-Range', 'bytes 0-' . self::CHUNK_SIZE . '/' . $params['size']);
-		$api->setOption(CURLOPT_FILE, $fileToStore);
+
+		var_dump($api);
 
 		$api->makeRequest();
 	}
