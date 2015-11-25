@@ -10,8 +10,9 @@ class OneDriveClient
 
 	protected $accessToken = null;
 
-	public function __construct($accessToken) {
+	public function __construct($accessToken, $ssl = true) {
 		$this->accessToken = $accessToken;
+		$this->ssl = $ssl;
 	}
 
 	public function listDrive() {
@@ -107,36 +108,29 @@ class OneDriveClient
 		return $params;
 	}
 
-	public function uploadFileChunk($path, $data, $params = array()) {
-		$splittedPath = explode('/', $path);
-		$splittedParams = count($splittedPath);
-		$itemName = $splittedPath[$splittedParams - 1];
-
+	public function uploadResumable($pathname) {
 		$api = new OneDriveCurl;
 		$api->setAccessToken($this->accessToken);
 		$api->setBaseURL(self::API_URL);
-		$api->setPath("/drive/root:/$path:/upload.createSession");
-		$api->setHeader('Content-Type', 'application/json');
+		$api->setPath("/drive/root:/$pathname:/upload.createSession");
+		$api->setHeader('Content-Length', 0);
 		$api->setOption(CURLOPT_POST, true);
-		$api->setOption(CURLOPT_POSTFIELDS, json_encode(array(
-			'item' => array(
-				'name' => $itemName
-				))));
 
-		$result = $api->makeRequest();
-		$uploadUrl = $result['uploadUrl'];
+		return $api->makeRequest();
+	}
 
-		$file = fopen($itemName, 'r');
-
+	public function uploadFileChunk($chunk, $params = array()) {
 		$api = new OneDriveCurl;
-		$api->setPath($uploadUrl);
+		$api->setAccessToken($this->accessToken);
+		$api->setBaseURL($params['uploadUrl']);
 		$api->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
-		$api->setHeader('Content-Length', $params['size']);
-		$api->setHeader('Content-Range', 'bytes 0-' . self::CHUNK_SIZE . '/' . $params['size']);
 
-		var_dump($api);
+		// Upload chunk
+		$api->setHeader('Content-Length', $params['endBytes'] - $params['startBytes'] + 1);
+		$api->setHeader('Content-Range', "bytes {$params['startBytes']}-{$params['endBytes']}/{$params['totalBytes']}");
+		$api->setOption(CURLOPT_POSTFIELDS, $chunk);
 
-		$api->makeRequest();
+		return $api->makeRequest();
 	}
 
 }

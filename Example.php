@@ -2,17 +2,32 @@
 
 header('Content-Type: text/html; charset=utf-8');
 
+set_time_limit(0);
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'OneDriveClient.php';
 
-$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAYxhIIOdjpt6bomvd26GQFhppZ8zU6WOOwWsShFiJb8HKd6VGgL1WUBEJobzorEC4Un6ZpoytTAm7TaoNtzOGVnrsHiKx8CNmhsy1eAXakmIJoLTAwu2Gq9jSXA+nXm7seyxah+IryvDhV5jpizEcMwdxLmuqTY0Yl/xzihLnPBujkRzUiWHBPcJ9WkoxJK8vmrcucVujYU6D4g/zeTT2xss3ts7JmCno9M+wtK+kKNd6JLESro0YE+Amt152pv/KWOk04/sTqJ3irfKj+asP5AriUMeRx+8I9lJ63nEXqMnIvUXZMrw1K9WANG9Fnk0UWWH6qEXCVTmg1vGkHgn4i0DZgAACBBFDaGqV1vFKAHnS/LuYdhZOvunUIyQfxwLLPjpGDeY68H4uiRFMJQa4dlU4fE+PqHmKyoUns5GlKYC1ikKl1BXki2qoO1w1/Iwz5cOzcWo0cZTtFqyDSvoqDqwZA6YN96OpnTKa6HzccHAvt6IlUkz8QfFOUGnHc5hGLK+Ou+3FwMm4rPXi+UqaVqSQoXv8GEUR3gBl8xAvcqS2LPBtN5KONyb0NIb/0kwLCn4CK6Uw5A4uGFZAGyyX5QNJt0PSLfIx3Rlq5uQu9U29ZdutHPI2lq8dP+++IxcGseUP4+5iLv8GpFusrFhYRhkCMBLT7Va2+aT06FfyCsXXPL3MIwzPR2xl2dXEQ++BJbrcEI8CmE0uavFyfkcBtgmF1IKsXzXSQ0Jfl171qJ1PkrU9F3H6VAB');
+$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAY4RhWZx8JBBbgRKcKLyaF4cqCD7NH9DeR7Fz/nCNzS5Ee/SlqjrSsXwSQDHANMw/TdTvmkIdsCsJdNhAypY7/QDXsuaFgs2DuTzA+n9rJf0M1r2GjCJ66pcFNniTYz94KsXcmm12ibde7xuZuExhkmD53XmRdvGxf7aY5v0LCjEWAAMJzz/CEGJCjpRrBEYQH3zcQU+pUO6uDG7zxdp/aj7W9NMWzxLo04ZCTukvFF3zHuMYQ8w9Xuvar6RksE4yaGfMQt7cH7IR9xqkH89wJk3Je1xBZwqTEzf5tqcSsr3E0gFEHBnrdoTBVtE/Gu2n07zfpNgHN0mfw45cHb44mgDZgAACCtMMW1Qp6Z4KAG/rTbm9LrWrcpaMtcc1P4KScVEQxRjRk5bzWRQMy0IHqh8snf7PNIw0YWofEtagUJU67XrGL+QjLNTkqsJr7pXncb1nP5N67oSKCuO7QgvPpIMGIcQ81M7YjfoYGWx0zvpCjWrhPetHyJGZUrD3hxJwnw67TyH+ANHre1+X8BdamxlKnkY6HRenE2DHSxVk2/YLhffsGo2EI9x66oZ24zI74mojKpnF98or7dvawHVfb1pghvqIfrq8XuV33N7ai+EvInWfEBkIEg/CYd15JbI2huR7UT30Va0sot07omaXB9DXUSH53/eNULgeSpcscy7RE5O+KuhLSethcEZflbOMkV3JgkIDEQ9x82prbeiiBdgMaVE1GmPtKPAkkg+KsSvSruE0tsGUlAB');
 
-$file = fopen('neta.exe', 'r');
-$file_size = filesize('neta.exe');
+$result = $client->uploadResumable('here/neta.exe');
 
-$params = array(
-	'size' => $file_size
-	);
+$params = array();
 
-$uploader = $client->uploadFileChunk('here/neta.exe', $file, $params);
+// Set uploadUrl
+$params['uploadUrl'] = $result['uploadUrl'];
 
+// Get file
+$file = fopen( 'neta.exe', 'rb' );
+
+$params['totalBytes'] = filesize( 'neta.exe' );
+$params['startBytes'] = 0;
+
+// Read file chunk
+while ( $chunk = fread( $file, OneDriveClient::CHUNK_SIZE ) ) {
+	$params['endBytes'] = ftell( $file ) - 1;
+
+	// Upload chunk
+	$client->uploadFileChunk( $chunk, $params );
+
+	$params['startBytes'] = $params['endBytes'] + 1;
+}
 

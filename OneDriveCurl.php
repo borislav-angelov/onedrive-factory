@@ -22,7 +22,11 @@ class OneDriveCurl
 		$this->setOption(CURLOPT_RETURNTRANSFER, true);
 		$this->setOption(CURLOPT_FOLLOWLOCATION, true);
 		$this->setOption(CURLOPT_CONNECTTIMEOUT, 30);
-		$this->setOption(CURLOPT_SSL_VERIFYPEER, false);
+
+       // Enable SSL support
+        $this->setOption(CURLOPT_SSL_VERIFYPEER, true);
+        $this->setOption(CURLOPT_CAINFO, __DIR__ . '/certs/cacert.pem');
+        $this->setOption(CURLOPT_CAPATH, __DIR__ . '/certs/');
 	}
 
 	public function setAccessToken($value) {
@@ -89,6 +93,7 @@ class OneDriveCurl
 
 		$response = curl_exec($this->handler);
 
+		var_dump($response);
 
 		if ($response === false) {
 			throw new Exception('Error executing HTTP request: ' . curl_error($this->handler));
