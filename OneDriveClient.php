@@ -103,7 +103,5 @@ class OneDriveClient
 		}
 
 		return $api->makeRequest();
-
-		return $params;
 	}
 }
