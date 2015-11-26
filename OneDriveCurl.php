@@ -2,7 +2,6 @@
 
 class OneDriveCurl
 {
-
 	protected $baseURL = null;
 
 	protected $path    = null;
@@ -23,6 +22,11 @@ class OneDriveCurl
 		$this->setOption(CURLOPT_RETURNTRANSFER, true);
 		$this->setOption(CURLOPT_FOLLOWLOCATION, true);
 		$this->setOption(CURLOPT_CONNECTTIMEOUT, 30);
+
+       // Enable SSL support
+        $this->setOption(CURLOPT_SSL_VERIFYPEER, true);
+        $this->setOption(CURLOPT_CAINFO, __DIR__ . '/certs/cacert.pem');
+        $this->setOption(CURLOPT_CAPATH, __DIR__ . '/certs/');
 	}
 
 	public function setAccessToken($value) {
@@ -71,8 +75,8 @@ class OneDriveCurl
 
 	public function makeRequest() {
 		$this->handler = curl_init($this->getBaseUrl() . $this->getPath());
-
 		$httpHeaders = array();
+
 		foreach ($this->headers as $name => $value) {
 			$httpHeaders[] = "$name: $value";
 		}
@@ -86,8 +90,9 @@ class OneDriveCurl
 		}
 
 		$response = curl_exec($this->handler);
+
 		if ($response === false) {
-			throw new Exception('Error executing HTTP request: ' . curl_error($this->handle));
+			throw new Exception('Error executing HTTP request: ' . curl_error($this->handler));
 		}
 
 		return json_decode($response, true);

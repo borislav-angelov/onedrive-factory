@@ -2,16 +2,32 @@
 
 header('Content-Type: text/html; charset=utf-8');
 
+set_time_limit(0);
+
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'OneDriveClient.php';
 
-$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAZ3bGTVf69CcFIH6EJGgcgPYyeWufM54YNLR3FJQAivbyj7Espbtd2ARFrfdXwSXMUjweszhicqsracU0uuww5FU+CnKrliFtiFr8ZHKduRts9J/gckDh2jQvNgfE2ytatRELV3xNVkRP15leOLFJTQCA7Zmxz9FEG44lyZGnKd3ElW0EfO1ExjeXUN8ny3+JOzRKqlFNSOb0r7ONRcUKVtqRGDRKdOxk9MJ6FzCo6VGl/Yp/AvtsRytgDC2NLmJ/UwAL18RAly70LwglBBYitFCSAPj45JfWoZOZX7ub19JDtEGlo/mVbvcafbQ5IJAA2TcE5iiTc6ythCb4T3m0I8DZgAACCQshycFBnhfKAHlPZ7aIyLWEwOHg8MFU/4dgkAp93+aEz/vXjgAvC6kosH3mTgAgBEFuxR14YEFWo5QYPFDseA7Ly6s1EyunyBEBUcWWP6N8h6T4LJ/DTZtWJSuqrrRkELZWfYlxv4Ftj6DDLOdlsKlK5kCWv/txukOCk6CVq5JynDUnAMLcngPAtTTmcOpRr9OvfUb2XavSezMHoXGHkgzBKIb0f2XvqhF9rM4fBAX04rNb71myajHOGqU3lLzaGCF7TeR8Puifeooqlojc+UATTHWt6v+whtWVCi0J9MG/QN+MoF7wvj7B/AWklkLYEvoo0JPxIpTk77cVfFwbZitH1YN9HKonNOo4U0XtusNa/ZZF1hAxlwJlGQ7vq/DPXBTVzSASUwSYNN2wAvg6WZBTVAB');
-/*
-$list_folder = $client->listFolder('here');
-*/
-$createFolder = $client->createFolder('test123');
+$client = new OneDriveClient('EwBYAq1DBAAUGCCXc8wU/zFu9QnLdZXy+YnElFkAAY4RhWZx8JBBbgRKcKLyaF4cqCD7NH9DeR7Fz/nCNzS5Ee/SlqjrSsXwSQDHANMw/TdTvmkIdsCsJdNhAypY7/QDXsuaFgs2DuTzA+n9rJf0M1r2GjCJ66pcFNniTYz94KsXcmm12ibde7xuZuExhkmD53XmRdvGxf7aY5v0LCjEWAAMJzz/CEGJCjpRrBEYQH3zcQU+pUO6uDG7zxdp/aj7W9NMWzxLo04ZCTukvFF3zHuMYQ8w9Xuvar6RksE4yaGfMQt7cH7IR9xqkH89wJk3Je1xBZwqTEzf5tqcSsr3E0gFEHBnrdoTBVtE/Gu2n07zfpNgHN0mfw45cHb44mgDZgAACCtMMW1Qp6Z4KAG/rTbm9LrWrcpaMtcc1P4KScVEQxRjRk5bzWRQMy0IHqh8snf7PNIw0YWofEtagUJU67XrGL+QjLNTkqsJr7pXncb1nP5N67oSKCuO7QgvPpIMGIcQ81M7YjfoYGWx0zvpCjWrhPetHyJGZUrD3hxJwnw67TyH+ANHre1+X8BdamxlKnkY6HRenE2DHSxVk2/YLhffsGo2EI9x66oZ24zI74mojKpnF98or7dvawHVfb1pghvqIfrq8XuV33N7ai+EvInWfEBkIEg/CYd15JbI2huR7UT30Va0sot07omaXB9DXUSH53/eNULgeSpcscy7RE5O+KuhLSethcEZflbOMkV3JgkIDEQ9x82prbeiiBdgMaVE1GmPtKPAkkg+KsSvSruE0tsGUlAB');
 
-var_dump($createFolder);
-/*
-$upload_file = $client->uploadFile('here', 'xaxa.txt');
+$result = $client->uploadResumable('here/neta.exe');
 
-$download_file = $client->downloadFile('opa.txt', 'onedrive-factory');*/
+$params = array();
+
+// Set uploadUrl
+$params['uploadUrl'] = $result['uploadUrl'];
+
+// Get file
+$file = fopen( 'neta.exe', 'rb' );
+
+$params['totalBytes'] = filesize( 'neta.exe' );
+$params['startBytes'] = 0;
+
+// Read file chunk
+while ( $chunk = fread( $file, OneDriveClient::CHUNK_SIZE ) ) {
+	$params['endBytes'] = ftell( $file ) - 1;
+
+	// Upload chunk
+	$client->uploadFileChunk( $chunk, $params );
+
+	$params['startBytes'] = $params['endBytes'] + 1;
+}
+
