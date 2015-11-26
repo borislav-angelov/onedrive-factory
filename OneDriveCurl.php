@@ -14,7 +14,7 @@ class OneDriveCurl
 
 	public function __construct() {
 		if (!extension_loaded('curl')) {
-			throw new Exception("OneDrive factory requires cURL extension");
+			throw new Exception('OneDrive factory requires cURL extension');
 		}
 
 		// Default configuration
@@ -30,7 +30,7 @@ class OneDriveCurl
 	}
 
 	public function setAccessToken($value) {
-		$this->setHeader('Authorization', "Bearer $value");
+		$this->setHeader('Authorization', 'Bearer $value');
 		return $this;
 	}
 
