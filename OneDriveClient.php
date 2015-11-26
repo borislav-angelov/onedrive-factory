@@ -123,7 +123,7 @@ class OneDriveClient
 		$api->setBaseURL($params['uploadUrl']);
 		$api->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
 
-		// Upload chunk
+		// Upload file chunk
 		$api->setHeader('Content-Length', $params['endBytes'] - $params['startBytes'] + 1);
 		$api->setHeader('Content-Range', "bytes {$params['startBytes']}-{$params['endBytes']}/{$params['totalBytes']}");
 		$api->setOption(CURLOPT_POSTFIELDS, $chunk);
