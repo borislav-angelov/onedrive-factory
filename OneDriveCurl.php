@@ -82,26 +82,20 @@ class OneDriveCurl
 		}
 
 		// Apply cURL headers
-
 		$this->setOption(CURLOPT_HTTPHEADER, $httpHeaders);
 
 		// Apply cURL options
-
 		foreach ($this->options as $name => $value) {
 			curl_setopt($this->handler, $name, $value);
 		}
 
 		$response = curl_exec($this->handler);
 
-		var_dump($response);
-
 		if ($response === false) {
 			throw new Exception('Error executing HTTP request: ' . curl_error($this->handler));
 		}
 
 		return json_decode($response, true);
-
-				var_dump($response);
 	}
 
 	public function __destruct() {

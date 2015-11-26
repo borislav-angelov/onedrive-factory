@@ -104,8 +104,6 @@ class OneDriveClient
 		}
 
 		return $api->makeRequest();
-
-		return $params;
 	}
 
 	public function uploadResumable($pathname) {
